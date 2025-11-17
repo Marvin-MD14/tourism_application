@@ -1,0 +1,41 @@
+name: tourism_application
+description: "A new Flutter project."
+# Ang linyang ito ay pumipigil sa package na hindi sinasadyang ma-publish sa
+# pub.dev gamit ang `flutter pub publish`. Ito ay mas gusto para sa mga private packages.
+publish_to: 'none' # Alisin ang linyang ito kung gusto mong mag-publish sa pub.dev
+
+# Ang sumusunod ay tumutukoy sa version at build number para sa iyong application.
+# ... (Versioning info) ...
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.9.2
+
+# Tinutukoy ng Dependencies ang iba pang mga package na kailangan ng iyong package upang gumana.
+dependencies:
+  flutter:
+    sdk: flutter
+ 
+  cupertino_icons: ^1.0.8
+  http: ^1.2.1 
+  webview_flutter: ^4.7.0
+  carousel_slider: ^4.2.1 
+  image_picker: ^1.0.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # Ang "flutter_lints" package sa ibaba ay naglalaman ng isang set ng inirerekomendang lints...
+  flutter_lints: ^5.0.0
+
+# Para sa impormasyon tungkol sa generic na bahagi ng Dart ng file na ito, tingnan ang
+# sumusunod na pahina: https://dart.dev/tools/pub/pubspec
+
+# Ang sumusunod na seksyon ay partikular sa Flutter packages.
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/
+    - assets/logos/
