@@ -7,8 +7,8 @@ import 'registration_screen.dart';
 import 'home_screen.dart'; 
 import 'admin_home_screen.dart'; 
 
-// Tiyaking ang IP address na ito ay tama at ang XAMPP/server ay tumatakbo
-const String loginApiUrl = "http://192.168.1.8/catanduanes_api/login.php"; 
+// GUMAGAMIT NA NG LIVE DOMAIN URL
+const String loginApiUrl = "https://islanddigitalguide.com/catanduanes_api/login.php"; 
 
 void main() {
   runApp(const MyApp());
@@ -116,7 +116,8 @@ class _LoginScreenState extends State<LoginScreen> {
         _showSnackBar('Server Error! Status: ${response.statusCode}', isError: true);
       }
     } catch (e) {
-      _showSnackBar('Connection Error: Make sure XAMPP is running and your IP address is correct. Error: ${e.toString()}', isError: true);
+      // UPDATED ERROR MESSAGE: Gumagamit ng live URL.
+      _showSnackBar('Connection Error: Make sure your API is accessible at $loginApiUrl. Error: ${e.toString()}', isError: true);
     } finally {
       if (mounted) {
         setState(() { _isLoading = false; });
@@ -138,9 +139,10 @@ class _LoginScreenState extends State<LoginScreen> {
     
     return Scaffold(
       appBar: AppBar(
-        title: const Row(
+        // INALIS ANG CONST SA ROW DAHIL SA 'ILLEGAL CHARACTER' ISSUE
+        title: Row( 
           mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
+          children: const <Widget>[ // Ginamit ang const dito sa children
             Icon(Icons.public_sharp, size: 28), 
             SizedBox(width: 8),
             Text('Island Digital Guide'),
@@ -177,7 +179,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 10),
                   
-                  const Center(
+      const Center(
                     child: Text(
                       'Login to explore Catanduanes.',
                       style: TextStyle(fontSize: 16, color: Colors.grey),
@@ -195,7 +197,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     keyboardType: TextInputType.emailAddress,
                   ),
                   const SizedBox(height: 20),
-              
+                  
                   TextField(
                     controller: _passwordController,
                     decoration: InputDecoration(

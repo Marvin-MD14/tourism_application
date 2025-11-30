@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-const String apiUrl = "http://192.168.1.5/catanduanes_api/register.php";
+// UPDATED: Gamit na ang live domain URL para sa registration
+const String apiUrl = "https://islanddigitalguide.com/catanduanes_api/register.php";
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
@@ -109,7 +110,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           _showSnackBar('Server Connection Error! Status: ${response.statusCode}', isError: true);
         }
       } catch (e) {
-        _showSnackBar('Connection Error: Is XAMPP running or IP correct? ${e.toString()}', isError: true);
+        // UPDATED ERROR MESSAGE: Gumagamit na ng live URL.
+        _showSnackBar('Connection Error: Make sure your API is accessible at $apiUrl. Error: ${e.toString()}', isError: true);
       } finally {
         setState(() {
           _isLoading = false;
@@ -143,7 +145,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         padding: const EdgeInsets.all(24.0),
         child: Column(
           children: [
-           
+            
             Column(
               children: [
                 Image.asset(
@@ -170,7 +172,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               ],
             ),
 
-       
+        
             Form(
               key: _formKey,
               child: Column(

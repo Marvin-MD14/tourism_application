@@ -1,10 +1,10 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+
+// --- (Walang global const dito para maiwasan ang red lines) ---
 
 class EditProfileScreen extends StatefulWidget {
   final String username;
@@ -29,7 +29,14 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
- 
+  
+  // ⭐ INILIPAT DITO: Ginawang final field sa loob ng State class
+  // Ito ang base URL ng iyong live server sa Hostinger
+  final String _baseUrl = 'https://islanddigitalguide.com/catanduanes_api'; 
+  
+  // Endpoint URL na ginagamit ang base URL
+  late final String _updateProfileUrl = '$_baseUrl/edit_profile.php';
+
   final TextEditingController _usernameController = TextEditingController();
   String? _selectedGender;
   String? _selectedCountry;
@@ -79,10 +86,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     'Uzbekistan', 'Vanuatu', 'Venezuela', 'Vietnam', 
     'Yemen', 'Zambia', 'Zimbabwe'];
 
-
-  static const String _ipAddress = '192.168.1.8'; 
-  final String _updateProfileUrl = 'http://192.168.1.8/catanduanes_api/update_profile.php';
-
   @override
   void initState() {
     super.initState();
@@ -115,13 +118,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     try {
       final request = http.MultipartRequest('POST', Uri.parse(_updateProfileUrl));
 
-    
+      // I-submit ang form fields
       request.fields['email'] = widget.email;
       request.fields['username'] = _usernameController.text;
       request.fields['gender'] = _selectedGender!;
       request.fields['country'] = _selectedCountry!;
 
-     
+      // I-submit ang profile image (kung mayroon)
       if (_pickedImage != null) {
         request.files.add(
           await http.MultipartFile.fromPath(
@@ -139,9 +142,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       if (jsonResponse['status'] == 'success') {
         _showSuccessSnackbar(jsonResponse['message']);
         
+        // Kuhanin ang bagong image URL mula sa PHP response
         final String newImageUrl = jsonResponse['image_url'] ?? _currentImageUrl ?? '';
 
-     
+        // Ibalik ang data sa Home Screen
         if (mounted) {
           Navigator.pop(context, {
             'status': 'success',
@@ -155,8 +159,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         _showErrorSnackbar(jsonResponse['message'] ?? 'Failed to update profile.');
       }
     } catch (e) {
-  
-      _showErrorSnackbar('Connection Error. Make sure XAMPP is running and your IP is $_ipAddress. Error: $e');
+      // Ipinapakita ang live server URL sa error message
+      _showErrorSnackbar('Connection Error. Make sure your server is running at $_baseUrl. Error: $e');
     }
   }
 
@@ -189,7 +193,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-       
+        
             Center(
               child: GestureDetector(
                 onTap: _pickImage,
@@ -268,7 +272,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ),
             const SizedBox(height: 20),
 
-       
+        
             DropdownButtonFormField<String>(
               initialValue: _selectedCountry,
               decoration: InputDecoration(
@@ -284,13 +288,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               }).toList(),
               onChanged: (String? newValue) {
                 setState(() {
-                  _selectedCountry = newValue;
+                _selectedCountry = newValue;
                 });
               },
             ),
             const SizedBox(height: 40),
 
-         
+          
             ElevatedButton.icon(
               onPressed: _saveChanges,
               icon: const Icon(Icons.save),
@@ -304,7 +308,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ),
             const SizedBox(height: 15),
             
-         
+          
             TextButton(
               onPressed: () => Navigator.pop(context),
               child: const Text('Cancel', style: TextStyle(color: Colors.grey, fontSize: 16)),
